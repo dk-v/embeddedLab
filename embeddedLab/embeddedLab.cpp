@@ -40,8 +40,8 @@ void findPeeks();
 int main(int argc, char* argv[]) {
 	
 	// Read the content of the file provided through the command line 
-	auto gpsSequence = readGpsSequence(argv[1]);
-	std::cout << gpsSequence;
+	auto sumSignal = readGpsSequence(argv[1]);
+	std::cout << sumSignal;
 
 	return 0;
 }
