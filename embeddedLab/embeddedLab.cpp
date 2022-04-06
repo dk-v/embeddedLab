@@ -2,35 +2,41 @@
 #include <string>
 #include <fstream>
 #include <vector>
-using namespace std;
 
+/// <summary>
+/// Reads the contents of a text file 
+/// </summary>
+/// <param name="fileName">The name of the file</param>
+/// <returns>A string containing the text in the file</returns>
+std::string readGpsSequence(const std::string& fileName) {
+	// Attach an input stream to the wanted file
+	std::ifstream input_stream(fileName);
+
+	// Check stream status
+	if (!input_stream) std::cerr << "Can't open input file!";
+
+	// File content  
+	std::vector<std::string> content;
+	std::string line;
+	std::string result;
+
+	// Extract all the text from the input file
+	while (std::getline(input_stream, line)) {
+		// store each line in the vector
+		content.push_back(line);
+	}
+
+	// Assign the vector contents to a simple string
+	for (const auto i : content)
+		result += i;
+
+	return result;
+}
 int main(int argc, char* argv[]) {
-    //string fileName = argv[1];
-    string fileName = "gps_sequence_8.txt";
-    /*fileName += ".txt";
-    cout << fileName;*/
-    // attach an input stream to the wanted file
-    ifstream input_stream(fileName);
+	
+	// Read the content of the file provided through the command line 
+	auto gpsSequence = readGpsSequence(argv[1]);
+	std::cout << gpsSequence;
 
-    // check stream status
-    if (!input_stream) cerr << "Can't open input file!";
-
-    // file contents  
-    vector<string> text;
-
-    // one line
-    string line;
-
-    // extract all the text from the input file
-    while (getline(input_stream, line)) {
-
-        // store each line in the vector
-        text.push_back(line);
-    }
-    for (auto i : text)
-        std::cout << i << ' ';
-
-
-
-    return 0;
+	return 0;
 }
