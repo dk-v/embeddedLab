@@ -32,6 +32,11 @@ std::string readGpsSequence(const std::string& fileName) {
 
 	return result;
 }
+
+void calculateCrossCorrelation();
+
+void findPeeks();
+
 int main(int argc, char* argv[]) {
 	
 	// Read the content of the file provided through the command line 
