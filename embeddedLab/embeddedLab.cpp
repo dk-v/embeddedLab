@@ -1,20 +1,186 @@
-// embeddedLab.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
-//
-
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <math.h>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+using namespace std;
+
+
+std::string readFile(std::string fileName) {
+    std::ifstream myfile;
+    myfile.open("D:/VisualStudio/git/" + fileName);
+    std::string myline;
+    if (myfile.is_open()) {
+        while (myfile) { // equivalent to myfile.good()
+            std::getline(myfile, myline);
+        }
+        return myline;
+    }
+    else {
+        std::cout << "Couldn't open file\n";
+        return 0;
+    }
+
+}
+vector<int> stringToIntVector(string& s) {
+    vector<int> sequence;
+    stringstream lineStream(s);
+    int number;
+
+    while (lineStream >> number)
+    {
+        sequence.push_back(number);
+    }
+
+    return sequence;
 }
 
-// Programm ausführen: STRG+F5 oder Menüeintrag "Debuggen" > "Starten ohne Debuggen starten"
-// Programm debuggen: F5 oder "Debuggen" > Menü "Debuggen starten"
 
-// Tipps für den Einstieg: 
-//   1. Verwenden Sie das Projektmappen-Explorer-Fenster zum Hinzufügen/Verwalten von Dateien.
-//   2. Verwenden Sie das Team Explorer-Fenster zum Herstellen einer Verbindung mit der Quellcodeverwaltung.
-//   3. Verwenden Sie das Ausgabefenster, um die Buildausgabe und andere Nachrichten anzuzeigen.
-//   4. Verwenden Sie das Fenster "Fehlerliste", um Fehler anzuzeigen.
-//   5. Wechseln Sie zu "Projekt" > "Neues Element hinzufügen", um neue Codedateien zu erstellen, bzw. zu "Projekt" > "Vorhandenes Element hinzufügen", um dem Projekt vorhandene Codedateien hinzuzufügen.
-//   6. Um dieses Projekt später erneut zu öffnen, wechseln Sie zu "Datei" > "Öffnen" > "Projekt", und wählen Sie die SLN-Datei aus.
+
+/*
+void readFile(string& fileName, string& fileContent) {
+    ifstream file(fileName);
+    if (file.is_open())
+    {
+        // text files only contain one line
+        getline(file, fileContent);
+        file.close();
+    }
+    else cout << "Unable to open file";
+}
+
+vector<int> parseLineToVector(string& line) {
+    vector<int> sequence;
+    stringstream lineStream(line);
+    int number;
+
+    while (lineStream >> number)
+    {
+        sequence.push_back(number);
+    }
+
+    return sequence;
+}*/
+
+vector<int> getSignal(string& file) {
+    string content;
+    content = readFile(file);
+    return stringToIntVector(content);
+}
+
+void shiftSequenceByOne(int sequence[10]) {
+    int temp = sequence[9];
+    for (int i = 9; i > 0; i--) {
+        sequence[i] = sequence[i - 1];
+    }
+    sequence[0] = temp;
+}
+
+void createGoldCodeForSat(int goldCode[1023], int x, int y) {
+    int sequence1[10] = { 1,1,1,1,1,1,1,1,1,1 };
+    int sequence2[10] = { 1,1,1,1,1,1,1,1,1,1 };
+
+    int indexCounter = 0;
+    while (indexCounter < 1023) {
+        int temp2 = sequence2[x - 1] ^ sequence2[y - 1];
+        int new2 = sequence2[9] ^ sequence2[8] ^ sequence2[7] ^ sequence2[5] ^ sequence2[2] ^ sequence2[1];
+        int new1 = sequence1[9] ^ sequence1[2];
+
+        goldCode[indexCounter] = (temp2 ^ sequence1[9]) == 0 ? -1 : 1;
+        indexCounter++;
+
+        shiftSequenceByOne(sequence1);
+        shiftSequenceByOne(sequence2);
+        sequence2[0] = new2;
+        sequence1[0] = new1;
+    }
+}
+
+void createGoldCodes(int goldCodes[24][1023]) {
+    createGoldCodeForSat(goldCodes[0], 2, 6);
+    createGoldCodeForSat(goldCodes[1], 3, 7);
+    createGoldCodeForSat(goldCodes[2], 4, 8);
+    createGoldCodeForSat(goldCodes[3], 5, 9);
+    createGoldCodeForSat(goldCodes[4], 1, 9);
+    createGoldCodeForSat(goldCodes[5], 2, 10);
+    createGoldCodeForSat(goldCodes[6], 1, 8);
+    createGoldCodeForSat(goldCodes[7], 2, 9);
+    createGoldCodeForSat(goldCodes[8], 3, 10);
+    createGoldCodeForSat(goldCodes[9], 2, 3);
+    createGoldCodeForSat(goldCodes[10], 3, 4);
+    createGoldCodeForSat(goldCodes[11], 5, 6);
+    createGoldCodeForSat(goldCodes[12], 6, 7);
+    createGoldCodeForSat(goldCodes[13], 7, 8);
+    createGoldCodeForSat(goldCodes[14], 8, 9);
+    createGoldCodeForSat(goldCodes[15], 9, 10);
+    createGoldCodeForSat(goldCodes[16], 1, 4);
+    createGoldCodeForSat(goldCodes[17], 2, 5);
+    createGoldCodeForSat(goldCodes[18], 3, 6);
+    createGoldCodeForSat(goldCodes[19], 4, 7);
+    createGoldCodeForSat(goldCodes[20], 5, 8);
+    createGoldCodeForSat(goldCodes[21], 6, 9);
+    createGoldCodeForSat(goldCodes[22], 1, 3);
+    createGoldCodeForSat(goldCodes[23], 4, 6);
+}
+
+float calculateScalar(vector<int> signal, int goldCode[1023], int delta) {
+    float skalar = 0;
+    for (int i = 0; i < 1023; i++) {
+        skalar += signal[i] * goldCode[(i + delta) % 1023] / 1.0;
+    }
+    return skalar;
+}
+
+void interpretSignal(vector<int> signal, int goldCodes[24][1023]) {
+    // calculated crosscorrelation values with formular for even register length
+    // Peak = Rauschwert eines anderen Satelliten
+    // deshalb 3 mal den rauschwert abziehen
+    int numberOfInterferingSatellites = 3;
+    float maxNoiceValue = 65.0;
+    float upperPeak = 1023 - numberOfInterferingSatellites * maxNoiceValue;
+    float lowerPeak = -1023 + numberOfInterferingSatellites * maxNoiceValue;
+
+    for (int satCounter = 0; satCounter < 24; satCounter++) {
+        for (int delta = 0; delta < 1024; delta++) {
+            // Das skalarprodukt wird nicht normalisiert. D.h. für eine 1 ist das skalar gleich 1023
+            // und für eine 0 ist das skalar = -1023. Allerdings nur im idealfall.
+            // Die anderen Satelliten stören das signal aber nur maximal mit dem wert,
+            // der über die kreuzkorrelation berechnet werden kann. Das heißt wir suchen nach
+            // einem Signal, dass in dem Bereich für 0 (-1023) bzw 1 (1023) plus/minus dem Rauschen
+            // der anderen Satteliten liegt.
+            float scalar = calculateScalar(signal, goldCodes[satCounter], delta);
+            if (scalar >= upperPeak || scalar <= lowerPeak) {
+                int bit = (scalar >= upperPeak) ? 1 : 0;
+                cout << "Satellit " << satCounter + 1 << " hat folgedes Bit gesendet: " << bit << " (Delta: " << delta << ")" << endl;
+                break;
+            }
+        }
+    }
+
+}
+
+int main(int argc, const char* argv[]) {
+    if (argc < 2)
+    {
+        cout << "please specify a file!\n Usage: program-name <file-location>" << endl;
+        return 0;
+    }
+
+    string fileName = argv[1];
+    vector<int> signal = getSignal(fileName);
+    for (auto i = signal.begin(); i != signal.end(); ++i)
+        cout << *i << ' ';
+    cout << "\n-------\n";
+
+    int goldCodes[24][1023];
+    createGoldCodes(goldCodes);
+    for (int i = 0; i < 1023; i++)
+        cout << goldCodes[23][i] << ", ";
+    cout << endl;
+
+    interpretSignal(signal, goldCodes);
+
+    return 0;
+}
