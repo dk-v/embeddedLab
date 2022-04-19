@@ -1,11 +1,3 @@
-//
-//  main.cpp
-//  Embedded_CDMA
-//
-//  Created by Greg on 10.01.17.
-//  Copyright © 2017 Greg. All rights reserved.
-//
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -14,6 +6,40 @@
 #include <math.h>
 
 using namespace std;
+
+/// <summary>
+/// Reads the contents of a text file 
+/// </summary>
+/// <param name="fileName">The name of the file</param>
+/// <returns>A vector of integers containing the integer representation of the text </returns>
+std::vector<int> readGpsSequence(const std::string& fileName) {
+    
+    // Attach an input stream to the wanted file
+    std::ifstream input_stream(fileName);
+
+    // Check stream status
+    if (!input_stream) std::cerr << "Can't open input file!";
+
+    // File content  
+    std::string content;
+    std::string line;
+    std::vector<int> result;
+
+    // Extract all the text from the input file
+    while (std::getline(input_stream, line)) {
+        // Assign the text to a string
+        content += line;
+    }
+
+    // Convert the string into a vector of integers 
+    std::stringstream stream(content);
+    int num;
+
+    while (stream >> num)
+        result.push_back(num);
+
+    return result;
+}
 
 void readFile(string& fileName, string& fileContent) {
     ifstream file(fileName);
@@ -137,11 +163,10 @@ void interpretSignal(vector<int> signal, int goldCodes[24][1023]) {
 }
 
 int main(int argc, const char* argv[]) {
-    if (argc < 2)
-    {
-        cout << "please specify a file!\n Usage: program-name <file-location>" << endl;
-        return 0;
-    }
+    // Read the content of the file provided through the command line 
+    auto sumSignal = readGpsSequence(argv[1]);
+    for (auto i : sumSignal)
+        std::cout << i << " ";
 
     string fileName = argv[1];
     vector<int> signal = getSignal(fileName);
