@@ -41,29 +41,29 @@ std::vector<int> readGpsSequence(const std::string& fileName) {
     return result;
 }
 
-void shiftSequenceByOne(int sequence[10]) {
-    int temp = sequence[9];
+void shiftBitsByOne(int bits[10]) {
+    int temp = bits[9];
     for (int i = 9; i > 0; i--) {
-        sequence[i] = sequence[i - 1];
+        bits[i] = bits[i - 1];
     }
-    sequence[0] = temp;
+    bits[0] = temp;
 }
 
 void createGoldCodeForSat(int goldCode[1023], int x, int y) {
     int sequence1[10] = { 1,1,1,1,1,1,1,1,1,1 };
     int sequence2[10] = { 1,1,1,1,1,1,1,1,1,1 };
 
-    int indexCounter = 0;
-    while (indexCounter < 1023) {
+    int index = 0;
+    while (index < 1023) {
         int temp2 = sequence2[x - 1] ^ sequence2[y - 1];
         int new2 = sequence2[9] ^ sequence2[8] ^ sequence2[7] ^ sequence2[5] ^ sequence2[2] ^ sequence2[1];
         int new1 = sequence1[9] ^ sequence1[2];
 
-        goldCode[indexCounter] = (temp2 ^ sequence1[9]) == 0 ? -1 : 1;
-        indexCounter++;
+        goldCode[index] = (temp2 ^ sequence1[9]) == 0 ? -1 : 1;
+        index++;
 
-        shiftSequenceByOne(sequence1);
-        shiftSequenceByOne(sequence2);
+        shiftBitsByOne(sequence1);
+        shiftBitsByOne(sequence2);
         sequence2[0] = new2;
         sequence1[0] = new1;
     }
@@ -96,12 +96,12 @@ void createGoldCodes(int goldCodes[24][1023]) {
     createGoldCodeForSat(goldCodes[23], 4, 6);
 }
 
-float calculateScalar(vector<int> signal, int goldCode[1023], int delta) {
-    float skalar = 0;
+int calculateScalar(vector<int> signal, int goldCode[1023], int delta) {
+    int scalar = 0;
     for (int i = 0; i < 1023; i++) {
-        skalar += signal[i] * goldCode[(i + delta) % 1023] / 1.0;
+        scalar += signal[i] * goldCode[(i + delta) % 1023];
     }
-    return skalar;
+    return scalar;
 }
 
 void interpretSignal(vector<int> signal, int goldCodes[24][1023]) {
@@ -122,16 +122,22 @@ void interpretSignal(vector<int> signal, int goldCodes[24][1023]) {
             // einem Signal, dass in dem Bereich für 0 (-1023) bzw 1 (1023) plus/minus dem Rauschen
             // der anderen Satteliten liegt.
             float scalar = calculateScalar(signal, goldCodes[satCounter], delta);
-            if (scalar >= upperPeak || scalar <= lowerPeak) {
-                int bit = (scalar >= upperPeak) ? 1 : 0;
-                cout << "Satellit " << satCounter + 1 << " hat folgedes Bit gesendet: " << bit << " (Delta: " << delta << ")" << endl;
-                break;
+            if (scalar >= upperPeak) {
+                cout << "Satellit " << satCounter + 1 << " hat folgedes Bit gesendet: " << 1 << " (Delta: " << delta << ")" << endl;
+            }
+            if (scalar <= lowerPeak) {
+                cout << "Satellit " << satCounter + 1 << " hat folgedes Bit gesendet: " << 0 << " (Delta: " << delta << ")" << endl;
             }
         }
     }
 }
 
 int main(int argc, const char* argv[]) {
+    int xorTable[24][2] = {
+    {2, 6}, {3, 7}, {4, 8}, {5, 9}, {1, 9}, {2, 10}, {1, 8}, {2, 9}, {3, 10}, {2, 3}, {3, 4}, {5, 6},
+    {6, 7}, {7, 8}, {8, 9}, {9, 10}, {1, 4}, {2, 5}, {3, 6}, {4, 7}, {5, 8}, {6, 9}, {1, 3}, {4, 6}
+    };
+
     // Read the content of the file provided through the command line 
     auto sumSignal = readGpsSequence(argv[1]);
     for (auto i : sumSignal)
