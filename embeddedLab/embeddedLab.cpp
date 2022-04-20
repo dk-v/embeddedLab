@@ -41,36 +41,6 @@ std::vector<int> readGpsSequence(const std::string& fileName) {
     return result;
 }
 
-void readFile(string& fileName, string& fileContent) {
-    ifstream file(fileName);
-    if (file.is_open())
-    {
-        // text files only contain one line
-        getline(file, fileContent);
-        file.close();
-    }
-    else cout << "Unable to open file";
-}
-
-vector<int> parseLineToVector(string& line) {
-    vector<int> sequence;
-    stringstream lineStream(line);
-    int number;
-
-    while (lineStream >> number)
-    {
-        sequence.push_back(number);
-    }
-
-    return sequence;
-}
-
-vector<int> getSignal(string& file) {
-    string content;
-    readFile(file, content);
-    return parseLineToVector(content);
-}
-
 void shiftSequenceByOne(int sequence[10]) {
     int temp = sequence[9];
     for (int i = 9; i > 0; i--) {
@@ -139,9 +109,9 @@ void interpretSignal(vector<int> signal, int goldCodes[24][1023]) {
     // Peak = Rauschwert eines anderen Satelliten
     // deshalb 3 mal den rauschwert abziehen
     int numberOfInterferingSatellites = 3;
-    float maxNoiceValue = 65.0;
-    float upperPeak = 1023 - numberOfInterferingSatellites * maxNoiceValue;
-    float lowerPeak = -1023 + numberOfInterferingSatellites * maxNoiceValue;
+    float maxNoise = 65.0;
+    float upperPeak = 1023 - numberOfInterferingSatellites * maxNoise;
+    float lowerPeak = -1023 + numberOfInterferingSatellites * maxNoise;
 
     for (int satCounter = 0; satCounter < 24; satCounter++) {
         for (int delta = 0; delta < 1024; delta++) {
@@ -159,7 +129,6 @@ void interpretSignal(vector<int> signal, int goldCodes[24][1023]) {
             }
         }
     }
-
 }
 
 int main(int argc, const char* argv[]) {
@@ -168,19 +137,13 @@ int main(int argc, const char* argv[]) {
     for (auto i : sumSignal)
         std::cout << i << " ";
 
-    string fileName = argv[1];
-    vector<int> signal = getSignal(fileName);
-    for (auto i = signal.begin(); i != signal.end(); ++i)
-        cout << *i << ' ';
-    cout << "\n-------\n";
-
     int goldCodes[24][1023];
     createGoldCodes(goldCodes);
     for (int i = 0; i < 1023; i++)
         cout << goldCodes[23][i] << ", ";
     cout << endl;
 
-    interpretSignal(signal, goldCodes);
+    interpretSignal(sumSignal, goldCodes);
 
     return 0;
 }
