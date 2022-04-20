@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <math.h>
 
 using namespace std;
 
@@ -41,6 +40,10 @@ std::vector<int> readGpsSequence(const std::string& fileName) {
     return result;
 }
 
+/// <summary>
+/// Shifts all bits 1 postion to the right
+/// </summary>
+/// <param name="bits">The content of the register as an array of bits</param>
 void shiftBitsByOne(int bits[10]) {
     int temp = bits[9];
     for (int i = 9; i > 0; i--) {
@@ -49,58 +52,40 @@ void shiftBitsByOne(int bits[10]) {
     bits[0] = temp;
 }
 
-void createGoldCodeForSat(int goldCode[1023], int x, int y) {
-    int sequence1[10] = { 1,1,1,1,1,1,1,1,1,1 };
-    int sequence2[10] = { 1,1,1,1,1,1,1,1,1,1 };
+void calculateGoldSequence(int goldCode[1023], int registerSummandOne, int registerSummandTwo) {
+    int register1[10] = { 1,1,1,1,1,1,1,1,1,1 };
+    int register2[10] = { 1,1,1,1,1,1,1,1,1,1 };
 
     int index = 0;
     while (index < 1023) {
-        int temp = sequence2[x - 1] ^ sequence2[y - 1];
-        int new2 = sequence2[9] ^ sequence2[8] ^ sequence2[7] ^ sequence2[5] ^ sequence2[2] ^ sequence2[1];
-        int new1 = sequence1[9] ^ sequence1[2];
+        int temp = register2[registerSummandOne - 1] ^ register2[registerSummandTwo - 1];
+        int motherSequenceTwo = register2[9] ^ register2[8] ^ register2[7] ^ register2[5] ^ register2[2] ^ register2[1];
+        int motherSequenceOne = register1[9] ^ register1[2];
 
-        goldCode[index] = (temp ^ sequence1[9]) == 0 ? -1 : 1;
+        goldCode[index] = (temp ^ register1[9]) == 0 ? -1 : 1;
         index++;
 
-        shiftBitsByOne(sequence1);
-        shiftBitsByOne(sequence2);
-        sequence2[0] = new2;
-        sequence1[0] = new1;
+        shiftBitsByOne(register1);
+        shiftBitsByOne(register2);
+        register2[0] = motherSequenceTwo;
+        register1[0] = motherSequenceOne;
     }
 }
 
-void createGoldCodes(int goldCodes[24][1023]) {
-    createGoldCodeForSat(goldCodes[0], 2, 6);
-    createGoldCodeForSat(goldCodes[1], 3, 7);
-    createGoldCodeForSat(goldCodes[2], 4, 8);
-    createGoldCodeForSat(goldCodes[3], 5, 9);
-    createGoldCodeForSat(goldCodes[4], 1, 9);
-    createGoldCodeForSat(goldCodes[5], 2, 10);
-    createGoldCodeForSat(goldCodes[6], 1, 8);
-    createGoldCodeForSat(goldCodes[7], 2, 9);
-    createGoldCodeForSat(goldCodes[8], 3, 10);
-    createGoldCodeForSat(goldCodes[9], 2, 3);
-    createGoldCodeForSat(goldCodes[10], 3, 4);
-    createGoldCodeForSat(goldCodes[11], 5, 6);
-    createGoldCodeForSat(goldCodes[12], 6, 7);
-    createGoldCodeForSat(goldCodes[13], 7, 8);
-    createGoldCodeForSat(goldCodes[14], 8, 9);
-    createGoldCodeForSat(goldCodes[15], 9, 10);
-    createGoldCodeForSat(goldCodes[16], 1, 4);
-    createGoldCodeForSat(goldCodes[17], 2, 5);
-    createGoldCodeForSat(goldCodes[18], 3, 6);
-    createGoldCodeForSat(goldCodes[19], 4, 7);
-    createGoldCodeForSat(goldCodes[20], 5, 8);
-    createGoldCodeForSat(goldCodes[21], 6, 9);
-    createGoldCodeForSat(goldCodes[22], 1, 3);
-    createGoldCodeForSat(goldCodes[23], 4, 6);
+void generateGoldCodes(int goldCodes[24][1023], int xorTable[24][2]) {
+    for (int i = 0; i < 24; i++)
+    {
+        calculateGoldSequence(goldCodes[i], xorTable[i][0], xorTable[i][1]);
+    }
 }
 
 int calculateScalar(vector<int> signal, int goldCode[1023], int delta) {
     int scalar = 0;
+
     for (int i = 0; i < 1023; i++) {
         scalar += signal[i] * goldCode[(i + delta) % 1023];
     }
+
     return scalar;
 }
 
@@ -137,7 +122,8 @@ int main(int argc, const char* argv[]) {
         std::cout << i << " ";
 
     int goldCodes[24][1023];
-    createGoldCodes(goldCodes);
+    generateGoldCodes(goldCodes, xorTable);
+
     for (int i = 0; i < 1023; i++)
         cout << goldCodes[23][i] << ", ";
     cout << endl;
