@@ -55,11 +55,11 @@ void createGoldCodeForSat(int goldCode[1023], int x, int y) {
 
     int index = 0;
     while (index < 1023) {
-        int temp2 = sequence2[x - 1] ^ sequence2[y - 1];
+        int temp = sequence2[x - 1] ^ sequence2[y - 1];
         int new2 = sequence2[9] ^ sequence2[8] ^ sequence2[7] ^ sequence2[5] ^ sequence2[2] ^ sequence2[1];
         int new1 = sequence1[9] ^ sequence1[2];
 
-        goldCode[index] = (temp2 ^ sequence1[9]) == 0 ? -1 : 1;
+        goldCode[index] = (temp ^ sequence1[9]) == 0 ? -1 : 1;
         index++;
 
         shiftBitsByOne(sequence1);
@@ -105,28 +105,21 @@ int calculateScalar(vector<int> signal, int goldCode[1023], int delta) {
 }
 
 void interpretSignal(vector<int> signal, int goldCodes[24][1023]) {
-    // calculated crosscorrelation values with formular for even register length
-    // Peak = Rauschwert eines anderen Satelliten
-    // deshalb 3 mal den rauschwert abziehen
     int numberOfInterferingSatellites = 3;
+    // Result of the cross correlation formula with even register length and a length of 10
+    // R = -2^((n+2)/2)-1 = -2^((10+2)/2)-1 = -65
     float maxNoise = 65.0;
     float upperPeak = 1023 - numberOfInterferingSatellites * maxNoise;
     float lowerPeak = -1023 + numberOfInterferingSatellites * maxNoise;
 
-    for (int satCounter = 0; satCounter < 24; satCounter++) {
+    for (int i = 0; i < 24; i++) {
         for (int delta = 0; delta < 1024; delta++) {
-            // Das skalarprodukt wird nicht normalisiert. D.h. für eine 1 ist das skalar gleich 1023
-            // und für eine 0 ist das skalar = -1023. Allerdings nur im idealfall.
-            // Die anderen Satelliten stören das signal aber nur maximal mit dem wert,
-            // der über die kreuzkorrelation berechnet werden kann. Das heißt wir suchen nach
-            // einem Signal, dass in dem Bereich für 0 (-1023) bzw 1 (1023) plus/minus dem Rauschen
-            // der anderen Satteliten liegt.
-            float scalar = calculateScalar(signal, goldCodes[satCounter], delta);
+            int scalar = calculateScalar(signal, goldCodes[i], delta);
             if (scalar >= upperPeak) {
-                cout << "Satellit " << satCounter + 1 << " hat folgedes Bit gesendet: " << 1 << " (Delta: " << delta << ")" << endl;
+                cout << "Satellit " << i + 1 << " hat folgedes Bit gesendet: " << 1 << " (Delta: " << delta << ")" << endl;
             }
             if (scalar <= lowerPeak) {
-                cout << "Satellit " << satCounter + 1 << " hat folgedes Bit gesendet: " << 0 << " (Delta: " << delta << ")" << endl;
+                cout << "Satellit " << i + 1 << " hat folgedes Bit gesendet: " << 0 << " (Delta: " << delta << ")" << endl;
             }
         }
     }
