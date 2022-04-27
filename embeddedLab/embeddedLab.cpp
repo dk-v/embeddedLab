@@ -124,10 +124,7 @@ int main(int argc, const char* argv[]) {
     int goldCodes[24][1023];
     generateGoldCodes(goldCodes, xorTable);
 
-    for (int i = 0; i < 1023; i++)
-        cout << goldCodes[23][i] << ", ";
-    cout << endl;
-
+    std:cout << endl;   
     interpretSignal(sumSignal, goldCodes);
 
     return 0;
