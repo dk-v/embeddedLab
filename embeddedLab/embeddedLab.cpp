@@ -124,43 +124,43 @@ int main(int argc, const char* argv[]) {
 
 	int a[1023] = { -2,0,0,-2,4,-2,-2,-4,2,0,0,0,-2,-2,2,0,0,-2,0,-2,-2,-2,0,-2,0,2,0,0,0,-2,-2,0,-4,-2,0,2,0,0,2,2,0,2,0,0,0,-2,-2,0,0,0,0,0,-2,0,2,2,0,-2,-2,2,2,0,2,2,-2,2,-2,-4,4,-2,0,2,4,-2,-2,0,2,0,-2,0,0,0,-2,-2,-2,0,0,-2,-2,-2,2,2,2,0,2,-2,0,-2,-2,-4,-2,0,0,2,2,-2,2,0,-2,0,2,2,2,-2,-2,-4,0,2,2,-2,-2,0,0,4,-2,-4,-4,0,0,0,0,2,2,2,-4,-2,2,0,0,-4,2,2,-4,-2,0,-2,2,0,2,0,-2,0,0,-2,-2,2,0,0,4,0,0,0,-4,0,2,0,4,0,-2,-4,0,-2,0,0,2,-2,0,0,2,4,0,-2,0,-2,2,-2,0,0,-2,2,2,2,2,0,-2,0,0,2,-2,2,0,-4,0,0,2,-2,-2,0,-2,0,0,0,0,-2,0,-2,2,-4,2,2,-4,-2,2,-4,2,2,-2,0,-2,2,-2,-2,0,-2,0,-2,0,2,4,0,4,0,0,0,0,-2,2,2,0,0,0,-2,-2,0,0,0,4,0,0,0,4,0,-2,0,0,0,-2,-4,2,0,-2,0,-2,2,2,2,-2,0,2,-2,-2,0,-2,0,2,0,2,-2,0,0,4,0,2,-2,2,-2,2,0,0,-4,0,0,-2,-2,0,-2,0,2,2,-2,0,0,4,-2,0,-2,0,-2,0,0,0,-2,0,0,4,-2,-2,-2,2,-2,2,-2,2,-2,-2,0,0,0,0,-2,0,0,0,0,0,4,-2,0,0,2,4,0,0,2,0,2,-2,-2,0,2,2,0,0,-4,2,2,0,-2,0,2,-2,2,4,0,0,0,0,0,-2,0,2,2,0,-4,-2,2,0,-2,0,0,0,2,0,-2,0,0,-2,2,0,2,0,0,-4,0,0,0,0,2,0,0,2,-2,-2,0,-2,0,-2,0,2,0,-2,2,0,-2,0,-2,2,2,0,0,0,-4,0,-2,0,0,2,0,0,0,-2,0,0,0,2,2,4,0,0,2,0,-4,0,2,2,0,-2,0,4,2,0,2,2,0,-2,0,-2,-2,-2,0,-2,2,0,0,0,0,0,0,-2,-2,-2,2,4,2,-2,-2,0,0,-2,4,-4,0,2,-2,0,0,2,-2,0,2,2,2,2,4,0,0,-2,2,0,0,-4,-2,0,-2,2,4,0,-2,-4,2,0,-2,0,-2,4,0,0,0,-2,0,2,4,2,2,0,2,2,0,2,-2,-2,2,-2,0,0,0,0,-2,2,0,0,-2,-4,0,0,2,4,2,0,2,-2,0,-2,2,0,-2,-4,2,2,2,-4,-4,4,0,0,-2,-2,-2,-4,0,2,-2,-2,0,-2,-4,-4,0,-2,-4,-2,-2,2,4,0,0,0,4,0,-2,0,-2,0,-4,4,-2,0,2,-4,-2,-4,0,0,0,0,-2,-4,2,2,4,-2,-2,2,0,2,4,0,0,0,2,0,0,2,0,-2,0,2,0,-2,4,0,0,0,0,2,-2,-2,0,0,0,0,-2,2,-4,4,2,2,-2,2,-2,-2,4,0,0,0,2,-4,2,0,-4,-2,2,2,-2,2,0,0,-2,-2,-4,0,0,0,2,2,0,-2,-2,0,2,2,-2,2,2,2,0,-2,0,0,0,0,2,0,-4,2,2,0,4,0,-2,4,2,2,2,2,-4,2,0,-2,4,0,2,0,0,2,0,0,0,2,2,-2,2,0,2,2,-2,0,2,0,0,-2,0,4,-2,0,0,0,0,2,2,-2,2,0,-2,-2,2,0,4,0,0,0,0,0,2,2,0,2,4,0,0,0,0,0,0,-2,2,0,-2,2,0,0,0,0,2,2,-2,2,0,0,2,2,2,0,0,2,2,0,-4,-2,0,-2,0,2,0,-2,0,0,-4,0,0,-2,0,0,0,0,0,2,4,0,0,0,0,-2,0,4,-2,0,0,0,0,0,2,0,0,0,0,0,2,0,2,0,0,-4,-4,2,2,4,4,-4,-2,0,-2,0,4,0,-4,0,0,-4,-2,2,2,0,0,0,0,0,0,-2,0,0,2,0,2,-2,-2,-2,0,-2,-2,-2,-2,0,0,2,-2,-4,0,-2,0,0,-2,0,2,-2,0,4,4,-2,-2,-2,-2,2,2,2,2,-2,4,2,0,-2,0,-4,0,2,0,0,-2,0,0,-2,-4,0,0,2,0,-2,0,0,2,2,0,0,2,0,2,-2,2,-2,2,0,2,0,-2,-4,-2,0,-2,2,-2,2,-2,0,-2,4,0,2,0,2,0,0,2,2,0,0,0,0,-2,0,0,0,2,2,0,0,-2,-4,-2,0,0,2,-2,2,-2,0,2,0,2,2,0,0,0,0,0,2,0,0,2,0,2,4,0,2,4,2,2,0,0,2,0,4,-2,-2,-2,2,2,4,2,0,4,-2,4,-2 };
 
-	using std::chrono::high_resolution_clock;
-	using std::chrono::duration_cast;
-	using std::chrono::duration;
-	using std::chrono::milliseconds;
+	//using std::chrono::high_resolution_clock;
+	//using std::chrono::duration_cast;
+	//using std::chrono::duration;
+	//using std::chrono::milliseconds;
 
-	std::chrono::milliseconds time_ms = std::chrono::milliseconds(0);
-	std::chrono::duration<double, std::milli> time_ms_d = std::chrono::duration<double, std::milli>(0.);
+	//std::chrono::milliseconds time_ms = std::chrono::milliseconds(0);
+	//std::chrono::duration<double, std::milli> time_ms_d = std::chrono::duration<double, std::milli>(0.);
 
-	const int numberOfRuns = 100;
+	//const int numberOfRuns = 100;
 
-	for (auto i = 0; i < numberOfRuns; i++)
-	{
-		auto t1 = high_resolution_clock::now();
+	//for (auto i = 0; i < numberOfRuns; i++)
+	//{
+	//	auto t1 = high_resolution_clock::now();
 
 		int goldCodes[24][1023];
 		generateGoldCodes(goldCodes, xorTable);
 
-	std:cout << endl;
+	//std:cout << endl;
 
 		interpretSignal(a, goldCodes);
-		auto t2 = high_resolution_clock::now();
-		/* Getting number of milliseconds as an integer. */
-		auto ms_int = duration_cast<milliseconds>(t2 - t1);
+	//	auto t2 = high_resolution_clock::now();
+	//	/* Getting number of milliseconds as an integer. */
+	//	auto ms_int = duration_cast<milliseconds>(t2 - t1);
 
-		/* Getting number of milliseconds as a double. */
-		duration<double, std::milli> ms_double = t2 - t1;
-		time_ms += ms_int;
-		time_ms_d += ms_double;
+	//	/* Getting number of milliseconds as a double. */
+	//	duration<double, std::milli> ms_double = t2 - t1;
+	//	time_ms += ms_int;
+	//	time_ms_d += ms_double;
 
-		std::cout << ms_int.count() << "ms\n";
-		std::cout << ms_double.count() << "ms\n";
+	//	std::cout << ms_int.count() << "ms\n";
+	//	std::cout << ms_double.count() << "ms\n";
 
-	}
+	//}
 
-	auto test = time_ms /= numberOfRuns;
-	std::cout << numberOfRuns << " run average: " << test.count() << std::endl;
-	auto test2 = time_ms_d /= numberOfRuns;
-	std::cout << numberOfRuns << " run average: " << test2.count() << std::endl;
+	//auto test = time_ms /= numberOfRuns;
+	//std::cout << numberOfRuns << " run average: " << test.count() << std::endl;
+	//auto test2 = time_ms_d /= numberOfRuns;
+	//std::cout << numberOfRuns << " run average: " << test2.count() << std::endl;
 	return 0;
 }
