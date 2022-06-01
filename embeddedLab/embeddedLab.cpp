@@ -123,8 +123,8 @@ int main(int argc, const char* argv[]) {
 	}
 
 	auto test = time_ms /= numberOfRuns;
-	std::cout << numberOfRuns << " run average: " << test.count() << std::endl;
+	std::cout << numberOfRuns << " run average: " << test.count() << "ms" << std::endl;
 	auto test2 = time_ms_d /= numberOfRuns;
-	std::cout << numberOfRuns << " run average: " << test2.count() << std::endl;
+	std::cout << numberOfRuns << " run average: " << test2.count() << "ms" << std::endl;
 	return 0;
 }
