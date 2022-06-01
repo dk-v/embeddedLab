@@ -18,8 +18,5 @@
     <ClCompile Include="embeddedLab.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="perfbenchAdjustments.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
