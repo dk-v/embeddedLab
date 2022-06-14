@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <chrono>
+#include <algorithm>
 
 /// <summary>
 /// Shifts all bits 1 postion to the right
